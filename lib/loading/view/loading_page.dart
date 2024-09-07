@@ -5,24 +5,26 @@ import 'package:samanta/loading/loading.dart';
 import 'package:samanta/title/title.dart';
 
 class LoadingPage extends StatefulWidget {
-  const LoadingPage({required this.index});
+  const LoadingPage({required this.index, required this.name});
   final int index;
+  final String name;
 
   @override
-  State<LoadingPage> createState() => _LoadingPageState(chapterIndex: index);
+  State<LoadingPage> createState() => _LoadingPageState(chapterIndex: index, chapterName: name);
 }
 
 class _LoadingPageState extends State<LoadingPage> {
-  _LoadingPageState({required this.chapterIndex});
+  _LoadingPageState({required this.chapterIndex, required this.chapterName});
 
   int chapterIndex;
+  String chapterName;
   Future<void> onPreloadComplete(BuildContext context) async {
     final navigator = Navigator.of(context);
     await Future<void>.delayed(AnimatedProgressBar.intrinsicAnimationDuration);
     if (!mounted) {
       return;
     }
-    await navigator.pushReplacement<void, void>(TitlePage.route(chapterIndex));
+    await navigator.pushReplacement<void, void>(TitlePage.route(chapterIndex, chapterName));
   }
 
   @override

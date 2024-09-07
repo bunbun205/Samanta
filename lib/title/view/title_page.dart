@@ -3,13 +3,14 @@ import 'package:samanta/game/game.dart';
 import 'package:samanta/l10n/l10n.dart';
 
 class TitlePage extends StatelessWidget {
-  const TitlePage({required this.chapterNum});
+  const TitlePage({required this.chapterNum, required this.chapterName});
 
   final int chapterNum;
+  final String chapterName;
 
-  static Route<void> route(int num) {
+  static Route<void> route(int num, String name) {
     return MaterialPageRoute<void>(
-      builder: (_) => TitlePage(chapterNum: num),
+      builder: (_) => TitlePage(chapterNum: num, chapterName: name,),
     );
   }
 
@@ -19,7 +20,7 @@ class TitlePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chapter $chapterNum'),
+        title: Text('Chapter $chapterNum : $chapterName'),
       ),
       body: const SafeArea(child: TitleView()),
     );

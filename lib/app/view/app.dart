@@ -55,8 +55,8 @@ class AppView extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   final List<String> chapters = [
-    'Chapter 1: Build a Bussiness',
-    'Chapter 2: testing',
+    'Build a Bussiness',
+    'Testing',
   ];
 
   HomePage({super.key});
@@ -112,7 +112,7 @@ class ChapterButton extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LoadingPage(index: chapterNumber,),
+              builder: (context) => LoadingPage(index: chapterNumber, name: chapterName),
             ),
           );
       },
