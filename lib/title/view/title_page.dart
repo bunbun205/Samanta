@@ -3,7 +3,7 @@ import 'package:samanta/game/game.dart';
 import 'package:samanta/l10n/l10n.dart';
 
 class TitlePage extends StatelessWidget {
-  const TitlePage({required this.chapterNum, required this.chapterName});
+  const TitlePage({required this.chapterNum, required this.chapterName, super.key});
 
   final int chapterNum;
   final String chapterName;

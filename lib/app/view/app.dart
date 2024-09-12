@@ -48,18 +48,18 @@ class AppView extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: HomePage(),
+      home: ChapterPage(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class ChapterPage extends StatelessWidget {
+  ChapterPage({super.key});
+
   final List<String> chapters = [
     'Build a Bussiness',
     'Testing',
   ];
-
-  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +71,12 @@ class HomePage extends StatelessWidget {
         child: FractionallySizedBox(
           widthFactor: 0.5, // Occupy 50% of the screen width
           child: Padding(
-            padding: const EdgeInsets.all(16.0), // Padding around the grid
+            padding: const EdgeInsets.all(16), // Padding around the grid
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 5, // Number of columns in the grid
                 crossAxisSpacing: 16, // Spacing between the columns
                 mainAxisSpacing: 16, // Spacing between the rows
-                childAspectRatio: 1, // Making the items square
               ),
               itemCount: chapters.length,
               itemBuilder: (context, index) {
@@ -95,14 +94,14 @@ class HomePage extends StatelessWidget {
 }
 
 class ChapterButton extends StatelessWidget {
-  final String chapterName;
-  final int chapterNumber;
 
   const ChapterButton({
     required this.chapterName,
     required this.chapterNumber,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+  final String chapterName;
+  final int chapterNumber;
 
   @override
   Widget build(BuildContext context) {

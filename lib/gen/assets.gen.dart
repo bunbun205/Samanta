@@ -23,6 +23,39 @@ class $AssetsImagesGen {
   /// File path: assets/images/unicorn_animation.png
   AssetGenImage get unicornAnimation =>
       const AssetGenImage('assets/images/unicorn_animation.png');
+  
+  AssetGenImage get sky =>
+      const AssetGenImage('assets/images/sky.png');
+
+  AssetGenImage get road =>
+      const AssetGenImage('assets/images/road.png');
+
+  AssetGenImage get trees =>
+      const AssetGenImage('assets/images/trees.png');
+
+  AssetGenImage get cloud =>
+      const AssetGenImage('assets/images/cloud.png');
+  
+  AssetGenImage get lamp =>
+      const AssetGenImage('assets/images/lamp.png');
+
+  AssetGenImage get player =>
+      const AssetGenImage('assets/images/player.png');
+
+  AssetGenImage get rem =>
+      const AssetGenImage('assets/images/rem.png');
+
+  AssetGenImage get textbox =>
+      const AssetGenImage('assets/images/textbox.png');
+
+  AssetGenImage get button =>
+      const AssetGenImage('assets/images/button.png');
+  
+  AssetGenImage get buttondown =>
+      const AssetGenImage('assets/images/buttondown.png');
+
+  AssetGenImage get restaurant =>
+      const AssetGenImage('assets/images/restaurant.png');
 }
 
 class $AssetsLicensesGen {

@@ -3,7 +3,6 @@ import 'package:flame_audio/bgm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:samanta/game/game.dart';
-import 'package:samanta/gen/assets.gen.dart';
 import 'package:samanta/l10n/l10n.dart';
 import 'package:samanta/loading/cubit/cubit.dart';
 

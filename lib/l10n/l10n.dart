@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'arb/app_localizations.dart';
+import 'package:samanta/l10n/arb/app_localizations.dart';
 
 export 'arb/app_localizations.dart';
 

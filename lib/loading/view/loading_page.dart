@@ -5,7 +5,7 @@ import 'package:samanta/loading/loading.dart';
 import 'package:samanta/title/title.dart';
 
 class LoadingPage extends StatefulWidget {
-  const LoadingPage({required this.index, required this.name});
+  const LoadingPage({required this.index, required this.name, super.key});
   final int index;
   final String name;
 
