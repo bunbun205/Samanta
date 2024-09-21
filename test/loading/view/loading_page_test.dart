@@ -11,7 +11,6 @@ import 'package:mockingjay/mockingjay.dart';
 import 'package:samanta/gen/assets.gen.dart';
 import 'package:samanta/loading/loading.dart';
 
-import '../../helpers/helpers.dart';
 
 class _MockImages extends Mock implements Images {}
 

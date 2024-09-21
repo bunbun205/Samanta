@@ -4,7 +4,6 @@ import 'package:mockingjay/mockingjay.dart';
 
 import 'package:samanta/title/title.dart';
 
-import '../../helpers/helpers.dart';
 
 void main() {
   group('TitlePage', () {

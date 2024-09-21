@@ -57,8 +57,9 @@ class ChapterPage extends StatelessWidget {
   ChapterPage({super.key});
 
   final List<String> chapters = [
-    'Build a Bussiness',
-    'Testing',
+    'chapter 1: build a buisness',
+    'Chapter 2: test your knoledge on industries',
+    'Chapter 3: advancement of company',
   ];
 
   @override
