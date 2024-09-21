@@ -1,10 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flame/cache.dart';
-import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:samanta/game/game.dart';
-import 'package:samanta/gen/assets.gen.dart';
 import 'package:samanta/l10n/l10n.dart';
 
 class Samanta extends FlameGame {
@@ -13,8 +12,10 @@ class Samanta extends FlameGame {
     required this.effectPlayer,
     required this.textStyle,
     required Images images,
+    required this.chapterNum,
   }) {
     this.images = images;
+    kDebugMode;
   }
 
   final AppLocalizations l10n;
@@ -23,6 +24,8 @@ class Samanta extends FlameGame {
 
   final TextStyle textStyle;
 
+  late double totalEarnings = 0;
+
   int counter = 0;
 
   @override
@@ -30,39 +33,28 @@ class Samanta extends FlameGame {
 
 
   bool changeScene = false;
+  int chapterNum;
+
+  late RouterComponent router;
 
   @override
   Future<void> onLoad() async {
-    world = World(
-      children: [
-        // Unicorn(position: size / 2),
-        // CounterComponent(
-        //   position: (size / 2)
-        //     ..sub(
-        //       Vector2(0, 16),
-        //     ),
-        DialogueComponent(position: size/2),
-      ],
-    );
 
-    camera = CameraComponent(world: world);
-    camera.viewfinder.position = size / 2;
-    camera.viewfinder.zoom = 8;
-    camera.backdrop.add(Background(speed: 200));
-    await addAll([world, camera]);
+    router = RouterComponent(
+      routes: {
+        "Introduction" : Route(WelcomeScreen.new),
+        "Chapter1" : Route(Chapter1.new),
+      },
+      initialRoute: "Introduction",
+    );
+    await add(router);
+    super.onLoad();
   }
 
   @override
-  void update(double dt) {
-    // TODO: implement update
-    if(changeScene) {
-      world = Restaurant();
-      camera = CameraComponent(world: world);
-      camera.viewfinder.position = size / 2;
-      camera.viewfinder.zoom = 8;
-      final background = SpriteComponent.fromImage(images.fromCache(Assets.images.restaurant.path));
-      background.size = size;
-      camera.backdrop.add(background);
+  void update(double dt) async {
+    if(changeScene && chapterNum == 1) {
+      router.pushNamed("Chapter1");
     }
     super.update(dt);
   }

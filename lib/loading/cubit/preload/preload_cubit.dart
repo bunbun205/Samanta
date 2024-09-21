@@ -22,7 +22,7 @@ class PreloadCubit extends Cubit<PreloadState> {
       ),
       PreloadPhase(
         'images',
-        () => images.loadAllImages(),
+        images.loadAllImages,
       ),
     ];
 

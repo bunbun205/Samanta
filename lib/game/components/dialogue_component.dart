@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flame/input.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,7 @@ import 'package:samanta/gen/assets.gen.dart';
 
 class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
   DialogueComponent({
-    required super.position,
+    required super.scale, required super.position, required this.dialogues
   }) : super(anchor: Anchor.centerLeft);
 
   late final SpriteComponent player;
@@ -20,19 +19,12 @@ class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
 
   late final ButtonComponent nextButton;
 
-  late final List<Map<String, String>> dialogues = [
-    {'player': 'Hello, how are you?'},
-    {'npc': 'I am fine, thank you!'},
-    {'player': 'What can I do for you today?'},
-    {'npc': ' well today i want you to run a restraunt for me'},
-    {'player': ' okay then i better get to it.'},
-  ];
+  late final List<Map<String, String>> dialogues;
 
   int counter = 0;
 
   @override
   Future<void> onLoad() async {
-    late TextRenderer renderer;
     player = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.player.path));
     npc = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.rem.path));
     textbox = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.textbox.path));
@@ -50,10 +42,11 @@ class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
       scale: textbox.scale,
       position: textbox.position,
       align: Anchor.bottomCenter,
-      textRenderer: TextPaint(style: TextStyle(fontSize: 24, color: Colors.black)).copyWith(
+      textRenderer: TextPaint(style: const TextStyle(fontSize: 24, color: Colors.black)).copyWith(
         (style) => style.copyWith(
-          letterSpacing: 2.0,
-        )
+          letterSpacing: 2,
+          
+        ),
       ),
     );
 

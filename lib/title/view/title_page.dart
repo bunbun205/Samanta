@@ -22,13 +22,15 @@ class TitlePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Chapter $chapterNum : $chapterName'),
       ),
-      body: const SafeArea(child: TitleView()),
+      body: SafeArea(child: TitleView(chapterNum: chapterNum,)),
     );
   }
 }
 
 class TitleView extends StatelessWidget {
-  const TitleView({super.key});
+  final int chapterNum;
+
+  const TitleView({super.key, required this.chapterNum});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class TitleView extends StatelessWidget {
         height: 64,
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pushReplacement<void, void>(GamePage.route());
+            Navigator.of(context).pushReplacement<void, void>(GamePage.route(chapterNum));
           },
           child: Center(child: Text(l10n.titleButtonStart)),
         ),

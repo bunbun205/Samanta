@@ -4,23 +4,7 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
-import 'package:samanta/game/components/components.dart';
 import 'package:samanta/gen/assets.gen.dart';
-
-class EntryPoint extends World {
-
-  EntryPoint({required this.size});
-
-  Vector2 size;
-
-  @override
-  FutureOr<void> onLoad() {
-    children: [
-      DialogueComponent(position: size/2),
-    ];
-    return super.onLoad();
-  }
-}
 
 class Background extends ParallaxComponent {
   Background({required this.speed});

@@ -7,11 +7,13 @@ import 'package:samanta/l10n/l10n.dart';
 import 'package:samanta/loading/cubit/cubit.dart';
 
 class GamePage extends StatelessWidget {
-  const GamePage({super.key});
+  final int chapterNum;
 
-  static Route<void> route() {
+  const GamePage({super.key, required this.chapterNum});
+
+  static Route<void> route(int chapterNum) {
     return MaterialPageRoute<void>(
-      builder: (_) => const GamePage(),
+      builder: (_) => GamePage(chapterNum: chapterNum,),
     );
   }
 
@@ -21,26 +23,32 @@ class GamePage extends StatelessWidget {
       create: (context) {
         return AudioCubit(audioCache: context.read<PreloadCubit>().audio);
       },
-      child: const Scaffold(
-        body: SafeArea(child: GameView()),
+      child: Scaffold(
+        body: SafeArea(child: GameView(chapterNum: chapterNum)),
       ),
     );
   }
 }
 
 class GameView extends StatefulWidget {
-  const GameView({super.key, this.game});
+  const GameView({super.key, this.game, required this.chapterNum});
 
   final FlameGame? game;
+  
+  final int chapterNum;
 
   @override
-  State<GameView> createState() => _GameViewState();
+  State<GameView> createState() => _GameViewState(chapterNum: chapterNum);
 }
 
 class _GameViewState extends State<GameView> {
+
+  _GameViewState({required this.chapterNum});
   FlameGame? _game;
 
   late final Bgm bgm;
+  
+  int chapterNum;
 
   @override
   void initState() {
@@ -68,6 +76,7 @@ class _GameViewState extends State<GameView> {
           effectPlayer: context.read<AudioCubit>().effectPlayer,
           textStyle: textStyle,
           images: context.read<PreloadCubit>().images,
+          chapterNum: chapterNum
         );
     return Stack(
       children: [
