@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:samanta/game/components/components.dart';
+import 'package:samanta/game/components/gameover_screen.dart';
 import 'package:samanta/game/game.dart';
 import 'package:flutter/material.dart';
 import 'package:samanta/gen/assets.gen.dart';
@@ -14,8 +15,8 @@ class Chapter1 extends Component with HasGameRef<Samanta>{
   );
 
   final Timer customerSpawnTimer = Timer(5, repeat: true);
-  double totalEarnings = 0;
-  final double goalEarnings = 500000;
+  late TimerComponent customerSpawner;
+  final double goalEarnings = 1000;
 
   late TextComponent earnings;
 
@@ -23,11 +24,12 @@ class Chapter1 extends Component with HasGameRef<Samanta>{
   FutureOr<void> onLoad() async {
     await add(background);
     await add(MenuDisplay(scale: Vector2.all(8), position: gameRef.size / 2));
-
+ 
     customerSpawnTimer.start();
-    add(TimerComponent(period: 5, repeat: true, onTick: spawnCustomer));
+    customerSpawner = TimerComponent(period: 5, repeat: true, onTick: spawnCustomer);
+    add(customerSpawner);
     earnings = TextComponent(
-      text: totalEarnings.toString(),
+      text: gameRef.totalEarnings.toString(),
       textRenderer:
           TextPaint(style: const TextStyle(fontSize: 55, color: Colors.black))
               .copyWith(
@@ -45,18 +47,22 @@ class Chapter1 extends Component with HasGameRef<Samanta>{
   void update(double dt) {
     background.scale = Vector2(gameRef.size.x/1920, gameRef.size.y/1080);
 
-    totalEarnings = gameRef.totalEarnings;
-
-    earnings.text = totalEarnings.toString();
+    earnings.text = gameRef.totalEarnings.toString();
 
     customerSpawnTimer.update(dt);
 
-    if(totalEarnings >= goalEarnings) {
-      customerSpawnTimer.stop();
+    if(gameRef.totalEarnings >= goalEarnings) {
+      print("goal reached");
+      customerSpawner.removeFromParent();
+      gameRef.overlays.add("gameover_screen");
     }
   }
 
   void spawnCustomer() {
+    if(gameRef.totalEarnings >= goalEarnings) {
+      customerSpawnTimer.stop();
+      return;
+    }
     final customer = Customer();
     add(customer);
   }

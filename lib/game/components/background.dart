@@ -10,7 +10,6 @@ class Background extends ParallaxComponent {
   Background({required this.speed});
 
   final double speed;
-  int houseNum = Random().nextInt(5) + 1;
 
   @override
   Future<void> onLoad() async {

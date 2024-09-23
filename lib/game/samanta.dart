@@ -35,6 +35,8 @@ class Samanta extends FlameGame {
   bool changeScene = false;
   int chapterNum;
 
+  List<Customer> customersQueue = [];
+
   late RouterComponent router;
 
   @override
@@ -61,5 +63,13 @@ class Samanta extends FlameGame {
 
   void updateScene() {
     changeScene = true;
+  }
+
+  void addCustomerToQueue(Customer customer) {
+    customersQueue.add(customer);
+  }
+
+  void removeCustomerFromQueue(Customer customer) {
+    customersQueue.add(customer);
   }
 }

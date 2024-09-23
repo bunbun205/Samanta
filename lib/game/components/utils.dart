@@ -52,18 +52,17 @@ class MenuDisplay extends PositionComponent with HasGameRef<Samanta> {
 
 class Menu {
   final List<Map<String, double>> menu_items = [
-    {'burger': 300.00},
-    {'fries': 100.00},
-    {'lemonade': 200.00},
+    {'burger': 300},
+    {'fries': 100},
+    {'lemonade': 200},
   ];
   Map<String, double>? get_item(String Name) {
     for (var item in menu_items) {
       if (item.containsKey(Name)) {
         return item;
       }
-      ;
-      return null;
     }
+    return null;
   }
 
   String printMenu() {
@@ -119,8 +118,9 @@ class Order {
   double getTotalPrice(Menu menu) {
     double total = 0;
     for (var item in items.entries) {
-      double price = menu.get_item(item.key)?.values.first ?? 0;
-      total += price * item.value;
+      var price = menu.get_item(item.key)?.values.first;
+      // double price = menu.get_item(item.key)?.values.first ?? 0;
+      total += price! * item.value;
     }
     return total;
   }
@@ -134,20 +134,26 @@ class Customer extends SpriteComponent with HasGameRef<Samanta> {
   final Menu menu = Menu();
 
   late TextComponent orderDisplay;
-  late List <Sprite> Customer_Sprites;
+
+  late List<Sprite> customerSprites;
+  
+
   Customer() {
     for (int i = 0; i < Random().nextInt(3) + 1; i++) {
       order.addItem(menu.randomItem());
     }
-  position = Vector2(-50, 400);
+
+    position = Vector2(-50, 400);
   }
 
   @override
   FutureOr<void> onLoad() {
-     Customer_Sprites=[
-    Sprite(gameRef.images.fromCache(Assets.images.customer.path))
+    customerSprites = [
+      Sprite(gameRef.images.fromCache(Assets.images.player.path)),
+      Sprite(gameRef.images.fromCache(Assets.images.rem.path)),
     ];
-    sprite = Customer_Sprites[0];
+    Random random = Random();
+    sprite = customerSprites[random.nextInt(customerSprites.length)];
 
     orderDisplay = TextComponent(
       text: order.items.entries.toString(),

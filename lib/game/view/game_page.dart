@@ -2,6 +2,7 @@ import 'package:flame/game.dart' hide Route;
 import 'package:flame_audio/bgm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:samanta/game/components/gameover_screen.dart';
 import 'package:samanta/game/game.dart';
 import 'package:samanta/l10n/l10n.dart';
 import 'package:samanta/loading/cubit/cubit.dart';
@@ -80,7 +81,14 @@ class _GameViewState extends State<GameView> {
         );
     return Stack(
       children: [
-        Positioned.fill(child: GameWidget(game: _game!)),
+        Positioned.fill(child: GameWidget(
+          game: _game!,
+          overlayBuilderMap: {
+            'gameover_screen' : (BuildContext context, game) {
+              return GameoverScreen();
+            }
+          },
+        )),
         Align(
           alignment: Alignment.topRight,
           child: BlocBuilder<AudioCubit, AudioState>(
