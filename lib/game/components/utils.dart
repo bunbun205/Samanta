@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flame/components.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:samanta/game/samanta.dart';
 import 'package:samanta/gen/assets.gen.dart';
@@ -134,20 +134,20 @@ class Customer extends SpriteComponent with HasGameRef<Samanta> {
   final Menu menu = Menu();
 
   late TextComponent orderDisplay;
-
+  late List <Sprite> Customer_Sprites;
   Customer() {
     for (int i = 0; i < Random().nextInt(3) + 1; i++) {
       order.addItem(menu.randomItem());
     }
-
-    position = Vector2(-50, 300);
+  position = Vector2(-50, 400);
   }
 
   @override
   FutureOr<void> onLoad() {
-    sprite = SpriteComponent.fromImage(
-            gameRef.images.fromCache(Assets.images.player.path))
-        .sprite;
+     Customer_Sprites=[
+    Sprite(gameRef.images.fromCache(Assets.images.customer.path))
+    ];
+    sprite = Customer_Sprites[0];
 
     orderDisplay = TextComponent(
       text: order.items.entries.toString(),

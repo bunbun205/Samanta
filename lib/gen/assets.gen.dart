@@ -56,6 +56,8 @@ class $AssetsImagesGen {
 
   AssetGenImage get restaurant =>
       const AssetGenImage('assets/images/restaurant.png');
+   AssetGenImage get customer=>
+      const AssetGenImage('assets/images/game.png');
 }
 
 class $AssetsLicensesGen {
