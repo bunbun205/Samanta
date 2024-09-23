@@ -53,13 +53,13 @@ class Chapter1 extends Component with HasGameRef<Samanta>{
 
     if(gameRef.totalEarnings >= goalEarnings) {
       print("goal reached");
-      customerSpawner.removeFromParent();
       gameRef.overlays.add("gameover_screen");
     }
   }
 
   void spawnCustomer() {
     if(gameRef.totalEarnings >= goalEarnings) {
+      customerSpawner.removeFromParent();
       customerSpawnTimer.stop();
       return;
     }

@@ -1,9 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flame/cache.dart';
+import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:samanta/game/game.dart';
+import 'package:samanta/gen/assets.gen.dart';
 import 'package:samanta/l10n/l10n.dart';
 
 class Samanta extends FlameGame {
@@ -36,6 +38,11 @@ class Samanta extends FlameGame {
   int chapterNum;
 
   List<Customer> customersQueue = [];
+
+  late List<Sprite> customerSprites = [
+    Sprite(images.fromCache(Assets.images.player.path)),
+    Sprite(images.fromCache(Assets.images.rem.path)),
+  ];
 
   late RouterComponent router;
 

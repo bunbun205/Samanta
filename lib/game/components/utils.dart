@@ -135,9 +135,6 @@ class Customer extends SpriteComponent with HasGameRef<Samanta> {
 
   late TextComponent orderDisplay;
 
-  late List<Sprite> customerSprites;
-  
-
   Customer() {
     for (int i = 0; i < Random().nextInt(3) + 1; i++) {
       order.addItem(menu.randomItem());
@@ -148,12 +145,9 @@ class Customer extends SpriteComponent with HasGameRef<Samanta> {
 
   @override
   FutureOr<void> onLoad() {
-    customerSprites = [
-      Sprite(gameRef.images.fromCache(Assets.images.player.path)),
-      Sprite(gameRef.images.fromCache(Assets.images.rem.path)),
-    ];
+    
     Random random = Random();
-    sprite = customerSprites[random.nextInt(customerSprites.length)];
+    sprite = gameRef.customerSprites[random.nextInt(gameRef.customerSprites.length)];
 
     orderDisplay = TextComponent(
       text: order.items.entries.toString(),
