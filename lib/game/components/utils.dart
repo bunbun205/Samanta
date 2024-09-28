@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,8 @@ class Order {
   }
 }
 
-class Customer extends SpriteComponent with HasGameRef<Samanta> {
+class Customer extends SpriteComponent with 
+HasGameRef<Samanta>, CollisionCallbacks {
   final Order order = Order();
   bool gettingServed = false;
   double speed = 100;
@@ -140,12 +142,28 @@ class Customer extends SpriteComponent with HasGameRef<Samanta> {
       order.addItem(menu.randomItem());
     }
 
-    position = Vector2(-50, 400);
+   
+    super.debugMode=true;
   }
+  @override
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if(other.runtimeType==Customer && other.position.x>position.x){
+      speed=0;
 
+    }
+    // TODO: implement onCollisionStart
+    super.onCollisionStart(intersectionPoints, other);
+  }
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    speed=100;
+    // TODO: implement onCollisionEnd
+    super.onCollisionEnd(other);
+  }
   @override
   FutureOr<void> onLoad() {
-    
+    position=Vector2(-gameRef.size.x/2-10,gameRef.size.y/2);
+    gameRef.numCustomers+=1;
     Random random = Random();
     sprite = gameRef.customerSprites[random.nextInt(gameRef.customerSprites.length)];
 
@@ -157,7 +175,7 @@ class Customer extends SpriteComponent with HasGameRef<Samanta> {
       position: position,  // Position above the customer sprite
       anchor: anchor
     );
-
+    add(RectangleHitbox.relative(Vector2(1.2,1), parentSize: size));
     // add(orderDisplay);
   }
 
@@ -178,6 +196,7 @@ class Customer extends SpriteComponent with HasGameRef<Samanta> {
       position.x += speed * dt;
       if (position.x > gameRef.size.x + 100) {
         removeFromParent();
+        gameRef.numCustomers-=1;
       }
     }
     orderDisplay.position = position;

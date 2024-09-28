@@ -14,9 +14,8 @@ class Chapter1 extends Component with HasGameRef<Samanta>{
     gameRef.images.fromCache(Assets.images.restaurant.path),
   );
 
-  final Timer customerSpawnTimer = Timer(5, repeat: true);
-  late TimerComponent customerSpawner;
-  final double goalEarnings = 1000;
+  late Timer customerSpawnTimer;
+  final double goalEarnings = 100;
 
   late TextComponent earnings;
 
@@ -24,10 +23,8 @@ class Chapter1 extends Component with HasGameRef<Samanta>{
   FutureOr<void> onLoad() async {
     await add(background);
     await add(MenuDisplay(scale: Vector2.all(8), position: gameRef.size / 2));
- 
-    customerSpawnTimer.start();
-    customerSpawner = TimerComponent(period: 5, repeat: true, onTick: spawnCustomer);
-    add(customerSpawner);
+
+    customerSpawnTimer = Timer(5, repeat: true, onTick: spawnCustomer);
     earnings = TextComponent(
       text: gameRef.totalEarnings.toString(),
       textRenderer:
@@ -46,20 +43,15 @@ class Chapter1 extends Component with HasGameRef<Samanta>{
   @override
   void update(double dt) {
     background.scale = Vector2(gameRef.size.x/1920, gameRef.size.y/1080);
-
     earnings.text = gameRef.totalEarnings.toString();
-
     customerSpawnTimer.update(dt);
-
-    if(gameRef.totalEarnings >= goalEarnings) {
-      print("goal reached");
-      gameRef.overlays.add("gameover_screen");
+    if(gameRef.numCustomers==0 && customerSpawnTimer.current==0){
+    gameRef.overlays.add("gameover_screen");
     }
   }
 
   void spawnCustomer() {
     if(gameRef.totalEarnings >= goalEarnings) {
-      customerSpawner.removeFromParent();
       customerSpawnTimer.stop();
       return;
     }

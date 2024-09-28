@@ -8,7 +8,7 @@ import 'package:samanta/game/game.dart';
 import 'package:samanta/gen/assets.gen.dart';
 import 'package:samanta/l10n/l10n.dart';
 
-class Samanta extends FlameGame {
+class Samanta extends FlameGame with HasCollisionDetection {
   Samanta({
     required this.l10n,
     required this.effectPlayer,
@@ -37,11 +37,12 @@ class Samanta extends FlameGame {
   bool changeScene = false;
   int chapterNum;
 
-  List<Customer> customersQueue = [];
+int numCustomers=0;
 
   late List<Sprite> customerSprites = [
-    Sprite(images.fromCache(Assets.images.player.path)),
+    Sprite(images.fromCache(Assets.images.customer.path)),
     Sprite(images.fromCache(Assets.images.rem.path)),
+    Sprite(images.fromCache(Assets.images.customer1.path)),
   ];
 
   late RouterComponent router;
@@ -53,6 +54,7 @@ class Samanta extends FlameGame {
       routes: {
         "Introduction" : Route(WelcomeScreen.new),
         "Chapter1" : Route(Chapter1.new),
+        "Chapter2" : Route(Chapter2.new),
       },
       initialRoute: "Introduction",
     );
@@ -62,21 +64,20 @@ class Samanta extends FlameGame {
 
   @override
   void update(double dt) async {
-    if(changeScene && chapterNum == 1) {
-      router.pushNamed("Chapter1");
+    if(changeScene) {
+    switch(chapterNum){
+      case 1:
+        router.pushNamed("Chapter1");
+      break;
+      case 2:
+        router.pushNamed("Chapter2");
+      break;
+    }
     }
     super.update(dt);
   }
 
   void updateScene() {
     changeScene = true;
-  }
-
-  void addCustomerToQueue(Customer customer) {
-    customersQueue.add(customer);
-  }
-
-  void removeCustomerFromQueue(Customer customer) {
-    customersQueue.add(customer);
   }
 }

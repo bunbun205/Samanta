@@ -1,20 +1,17 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:samanta/game/game.dart';
 
-class Chapter2 extends World{
-  Vector2 size;
+class Chapter2 extends Component with HasGameRef<Samanta>{
 
-  List<Map<String, String>> dialogue = [
-    {'player': 'Hello, how are you?'},
-    {'npc': 'I am fine, thank you!'},
-    {'player': 'What can I do for you today?'},
-  ];
 
-  Chapter2({required this.size});
+
+
+
   @override
   FutureOr<void> onLoad() async{
     // TODO: implement onLoad
-    // await add(MenuDisplay(position: size/2));
+    await add(QuizComponent(scale: Vector2.all(8),position: gameRef.size/2));
   }
 }
