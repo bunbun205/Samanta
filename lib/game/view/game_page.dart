@@ -8,13 +8,14 @@ import 'package:samanta/l10n/l10n.dart';
 import 'package:samanta/loading/cubit/cubit.dart';
 
 class GamePage extends StatelessWidget {
+  const GamePage({required this.chapterNum, super.key});
   final int chapterNum;
-
-  const GamePage({super.key, required this.chapterNum});
 
   static Route<void> route(int chapterNum) {
     return MaterialPageRoute<void>(
-      builder: (_) => GamePage(chapterNum: chapterNum,),
+      builder: (_) => GamePage(
+        chapterNum: chapterNum,
+      ),
     );
   }
 
@@ -32,10 +33,10 @@ class GamePage extends StatelessWidget {
 }
 
 class GameView extends StatefulWidget {
-  const GameView({super.key, this.game, required this.chapterNum});
+  const GameView({required this.chapterNum, super.key, this.game});
 
   final FlameGame? game;
-  
+
   final int chapterNum;
 
   @override
@@ -43,12 +44,11 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-
   _GameViewState({required this.chapterNum});
   FlameGame? _game;
 
   late final Bgm bgm;
-  
+
   int chapterNum;
 
   @override
@@ -77,31 +77,58 @@ class _GameViewState extends State<GameView> {
           effectPlayer: context.read<AudioCubit>().effectPlayer,
           textStyle: textStyle,
           images: context.read<PreloadCubit>().images,
-          chapterNum: chapterNum
+          chapterNum: chapterNum,
         );
     return Stack(
       children: [
-        Positioned.fill(child: GameWidget(
-          game: _game!,
-          overlayBuilderMap: {
-            'gameover_screen' : (BuildContext context, game) {
-              return GameoverScreen();
-            }
-          },
-        )),
-        Align(
-          alignment: Alignment.topRight,
-          child: BlocBuilder<AudioCubit, AudioState>(
-            builder: (context, state) {
-              return IconButton(
-                icon: Icon(
-                  state.volume == 0 ? Icons.volume_off : Icons.volume_up,
-                ),
-                onPressed: () => context.read<AudioCubit>().toggleVolume(),
-              );
+        Positioned.fill(
+          child: GameWidget(
+            game: _game!,
+            overlayBuilderMap: {
+              'gameover_screen': (BuildContext context, game) {
+                return const GameoverScreen();
+              },
             },
           ),
         ),
+        Align(
+            alignment: Alignment.topRight,
+            child: Row(
+              children: [
+                BlocBuilder<AudioCubit, AudioState>(
+                  builder: (context, state) {
+                    return IconButton(
+                      icon: Icon(
+                        state.volume == 0 ? Icons.volume_off : Icons.volume_up,
+                      ),
+                      onPressed: () =>
+                          context.read<AudioCubit>().toggleVolume(),
+                    );
+                  },
+                ),
+                // BlocBuilder<PauseCubit, PauseState>(
+                //   builder: (context, pauseState) {
+                //     return IconButton(
+                //       icon: Icon(
+                //         pauseState.paused ? Icons.play_arrow : Icons.pause,
+                //       ),
+                //       onPressed: () => context.read<PauseCubit>().togglePause(),
+                //     );
+                //   },
+                // ),
+                // BlocListener<ExitCubit, ExitState>(
+                //   listener: (context, state) {
+                //     if (state.shouldExit) {
+                //       Navigator.of(context).pop(); // Exit the game
+                //     }
+                //   },
+                //   child: IconButton(
+                //     icon: const Icon(Icons.exit_to_app),
+                //     onPressed: () => context.read<ExitCubit>().exitGame(),
+                //   ),
+                // ),
+              ],
+            )),
       ],
     );
   }

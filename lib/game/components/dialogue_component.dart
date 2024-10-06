@@ -7,7 +7,7 @@ import 'package:samanta/gen/assets.gen.dart';
 
 class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
   DialogueComponent({
-    required super.scale, required super.position, required this.dialogues
+    required super.scale, required super.position, required this.dialogues,
   }) : super(anchor: Anchor.centerLeft);
 
   late final SpriteComponent player;
@@ -30,11 +30,10 @@ class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
     textbox = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.textbox.path));
     player.scale = Vector2.all(0.1);
     npc.scale = Vector2(-0.1, 0.1);
-    player.position = Vector2(-50, 0);
-    npc.position = Vector2(50, 0);
+    player.position = Vector2(-50, -5);
+    npc.position = Vector2(50, -5);
     textbox.scale = Vector2(0.1, 0.1);
     textbox.position = Vector2(-textbox.size.x/20, 0);
-    print(textbox.size);
     text = TextBoxComponent(
       anchor: anchor,
       text: dialogues[0].values.first,

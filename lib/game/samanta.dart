@@ -2,13 +2,17 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flame/cache.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:samanta/game/game.dart';
 import 'package:samanta/gen/assets.gen.dart';
 import 'package:samanta/l10n/l10n.dart';
 
+<<<<<<< Updated upstream
 class Samanta extends FlameGame with HasCollisionDetection {
+=======
+class Samanta extends FlameGame
+  with HasCollisionDetection {
+>>>>>>> Stashed changes
   Samanta({
     required this.l10n,
     required this.effectPlayer,
@@ -17,7 +21,6 @@ class Samanta extends FlameGame with HasCollisionDetection {
     required this.chapterNum,
   }) {
     this.images = images;
-    kDebugMode;
   }
 
   final AppLocalizations l10n;
@@ -37,7 +40,11 @@ class Samanta extends FlameGame with HasCollisionDetection {
   bool changeScene = false;
   int chapterNum;
 
+<<<<<<< Updated upstream
 int numCustomers=0;
+=======
+  int numCustomers = 0;
+>>>>>>> Stashed changes
 
   late List<Sprite> customerSprites = [
     Sprite(images.fromCache(Assets.images.customer.path)),
@@ -52,17 +59,24 @@ int numCustomers=0;
 
     router = RouterComponent(
       routes: {
+<<<<<<< Updated upstream
         "Introduction" : Route(WelcomeScreen.new),
         "Chapter1" : Route(Chapter1.new),
         "Chapter2" : Route(Chapter2.new),
+=======
+        'Introduction' : Route(WelcomeScreen.new),
+        'Chapter1' : Route(Chapter1.new),
+        'Chapter2' : Route(Chapter2.new),
+>>>>>>> Stashed changes
       },
-      initialRoute: "Introduction",
+      initialRoute: 'Introduction',
     );
     await add(router);
     super.onLoad();
   }
 
   @override
+<<<<<<< Updated upstream
   void update(double dt) async {
     if(changeScene) {
     switch(chapterNum){
@@ -73,7 +87,24 @@ int numCustomers=0;
         router.pushNamed("Chapter2");
       break;
     }
+=======
+  Future<void> update(double dt) async {
+    if(changeScene) {
+
+      switch (chapterNum) {
+        case 1:
+          router.pushNamed('Chapter1');
+        
+        case 2:
+          router.pushNamed('Chapter2');
+
+        default:
+      } 
+      
+>>>>>>> Stashed changes
     }
+
+    print(numCustomers);
     super.update(dt);
   }
 

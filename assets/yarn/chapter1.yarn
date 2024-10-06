@@ -1,0 +1,11 @@
+<<character player>>
+<<character npc>>
+title: Chapter_1
+
+---
+player: Hello how are you?
+npc: I am fine. How are you?
+player: I am well. What can I help you with today?
+npc: I need help running my restaurant.
+player: I am up for that!
+===

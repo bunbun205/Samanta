@@ -28,9 +28,9 @@ class TitlePage extends StatelessWidget {
 }
 
 class TitleView extends StatelessWidget {
-  final int chapterNum;
 
-  const TitleView({super.key, required this.chapterNum});
+  const TitleView({required this.chapterNum, super.key});
+  final int chapterNum;
 
   @override
   Widget build(BuildContext context) {

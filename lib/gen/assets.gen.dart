@@ -60,6 +60,16 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/game1.png');
        AssetGenImage get customer1=>
       const AssetGenImage('assets/images/game.png');
+
+  AssetGenImage get shelf =>
+      const AssetGenImage('assets/images/shelf.jpg');
+}
+
+class $AssetsYarnGen {
+  const $AssetsYarnGen();
+
+  /// File path: assets/audio/background.mp3
+  String get chapter1 => 'assets/yarn/chapter1.yarn';
 }
 
 class $AssetsLicensesGen {
@@ -80,6 +90,7 @@ class Assets {
 
   static const $AssetsAudioGen audio = $AssetsAudioGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsYarnGen yarn = $AssetsYarnGen();
   static const $AssetsLicensesGen licenses = $AssetsLicensesGen();
 }
 

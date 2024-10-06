@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
-import 'package:samanta/game/components/components.dart';
 import 'package:samanta/game/game.dart';
 
 class WelcomeScreen extends Component with HasGameRef<Samanta>{
