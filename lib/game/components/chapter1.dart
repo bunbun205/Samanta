@@ -6,32 +6,28 @@ import 'package:samanta/game/game.dart';
 import 'package:samanta/gen/assets.gen.dart';
 
 class Chapter1 extends Component with HasGameRef<Samanta> {
-  late SpriteComponent background = SpriteComponent.fromImage(
-    gameRef.images.fromCache(Assets.images.restaurant.path),
-  );
+  late SpriteComponent background;
 
   late Timer customerSpawnTimer;
-<<<<<<< Updated upstream
-  final double goalEarnings = 100;
-=======
   final double goalEarnings = 1000;
->>>>>>> Stashed changes
 
   late TextComponent earnings;
 
+  late SpriteComponent counter;
+
   @override
   FutureOr<void> onLoad() async {
+    background = SpriteComponent.fromImage(
+      gameRef.images.fromCache(Assets.images.restaurant.path),
+      size: gameRef.size,
+    );
     await add(background);
-    await add(MenuDisplay(scale: Vector2.all(8), position: gameRef.size / 2));
-<<<<<<< Updated upstream
-
-    customerSpawnTimer = Timer(5, repeat: true, onTick: spawnCustomer);
-=======
-    await add(InventoryDisplay(scale: Vector2.all(8), position: gameRef.size / 2));
+    await add(MenuDisplay(position: gameRef.size / 2));
+    gameRef.inventoryDisplay = InventoryDisplay(scale: Vector2.all(8), position: gameRef.size / 2);
+    await add(gameRef.inventoryDisplay);
 
     customerSpawnTimer = Timer(5, repeat: true, onTick: spawnCustomer);
     customerSpawnTimer.start();
->>>>>>> Stashed changes
     earnings = TextComponent(
       text: gameRef.totalEarnings.toString(),
       textRenderer:
@@ -43,36 +39,29 @@ class Chapter1 extends Component with HasGameRef<Samanta> {
       ),
     );
 
+    counter = SpriteComponent.fromImage(
+      gameRef.images.fromCache(Assets.images.counter.path),
+      scale: Vector2.all(0.5),
+    );
+    add(counter);
+
     add(earnings);
   }
 
   @override
   void update(double dt) {
-<<<<<<< Updated upstream
-    background.scale = Vector2(gameRef.size.x/1920, gameRef.size.y/1080);
-=======
-    background.scale = Vector2(gameRef.size.x / 1920, gameRef.size.y / 1080);
+    background.size = gameRef.size;
 
->>>>>>> Stashed changes
     earnings.text = gameRef.totalEarnings.toString();
     customerSpawnTimer.update(dt);
-<<<<<<< Updated upstream
-    if(gameRef.numCustomers==0 && customerSpawnTimer.current==0){
-    gameRef.overlays.add("gameover_screen");
-=======
 
     if (gameRef.numCustomers == 0 && customerSpawnTimer.current == 0) {
       gameRef.overlays.add('gameover_screen');
->>>>>>> Stashed changes
     }
   }
 
   void spawnCustomer() {
-<<<<<<< Updated upstream
-    if(gameRef.totalEarnings >= goalEarnings) {
-=======
     if (gameRef.totalEarnings >= goalEarnings) {
->>>>>>> Stashed changes
       customerSpawnTimer.stop();
       return;
     }

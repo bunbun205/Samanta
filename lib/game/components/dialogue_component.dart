@@ -7,7 +7,7 @@ import 'package:samanta/gen/assets.gen.dart';
 
 class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
   DialogueComponent({
-    required super.scale, required super.position, required this.dialogues,
+    required super.position, required this.dialogues, required super.size
   }) : super(anchor: Anchor.centerLeft);
 
   late final SpriteComponent player;
@@ -28,12 +28,13 @@ class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
     player = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.player.path));
     npc = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.rem.path));
     textbox = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.textbox.path));
-    player.scale = Vector2.all(0.1);
-    npc.scale = Vector2(-0.1, 0.1);
-    player.position = Vector2(-50, -5);
-    npc.position = Vector2(50, -5);
-    textbox.scale = Vector2(0.1, 0.1);
-    textbox.position = Vector2(-textbox.size.x/20, 0);
+    // player.scale = Vector2.all(0.1);
+    // npc.scale = Vector2(-0.1, 0.1);
+    player.position = Vector2(-gameRef.size.x/2 + 2.5*player.size.x, gameRef.size.y/2 - player.size.y/3);
+    npc.flipHorizontallyAroundCenter();
+    npc.position = Vector2(gameRef.size.x/2 - 2.5*player.size.x, gameRef.size.y/2 - player.size.y/3);
+    // textbox.scale = Vector2(0.1, 0.1);
+    textbox.position = Vector2(-textbox.size.x/2, gameRef.size.y/2 - textbox.size.y/2);
     text = TextBoxComponent(
       anchor: anchor,
       text: dialogues[0].values.first,
@@ -49,14 +50,17 @@ class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
       ),
     );
 
+    var buttonSprite = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.button.path));
+
     nextButton = ButtonComponent(
-      button: SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.button.path)),
+      button: buttonSprite,
       buttonDown: SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.buttondown.path)),
       anchor: anchor,
       onPressed: _updateSprites,
       scale: textbox.scale/2,
-      position: textbox.position + Vector2(25, 25),
     );
+
+    nextButton.position = Vector2(- buttonSprite.scaledSize.x/2, gameRef.size.y/2 + textbox.size.y/2 + buttonSprite.size.y/2);
     await addAll([player, npc, textbox, text, nextButton]);
   }
 
@@ -68,12 +72,12 @@ class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
     }
 
     if(dialogues[counter].keys.first == 'player') {
-      player.scale = Vector2.all(0.15);
-      npc.scale = Vector2(-0.1, 0.1);
+      player.scale = Vector2.all(1.5);
+      npc.scale = Vector2(-1, 1);
     }
     if(dialogues[counter].keys.first == 'npc') {
-      player.scale = Vector2.all(0.1);
-      npc.scale = Vector2(-0.15, 0.15);
+      player.scale = Vector2.all(1);
+      npc.scale = Vector2(-1.5, 1.5);
     }
     text.text = dialogues[counter].values.first;
     counter++;

@@ -14,25 +14,25 @@ class InventoryDisplay extends PositionComponent with HasGameRef<Samanta> {
     required super.position,
   }) : super(anchor: Anchor.centerLeft);
 
-  late final SpriteComponent textbox;
-
+  late final SpriteComponent shelf;
   late final List<ButtonComponent> ingredientButtons;
-
   final Inventory inventory = Inventory();
-
-  int counter = 0;
-
   final Menu menu = Menu();
+
+  // List to store the currently selected ingredients
+  List<String> selectedIngredients = [];
+
+  Customer? currentCustomer; // Reference to the current customer being served
 
   @override
   Future<void> onLoad() async {
-    textbox = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.shelf.path),);
-    textbox.scale = Vector2(0.03, 0.03);
-    textbox.position = Vector2(10, 15);
+    shelf = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.shelf.path),);
+    shelf.scale = Vector2(0.03, 0.03);
+    shelf.position = Vector2(-60, -40);
 
     ingredientButtons = List.empty(growable: true);
 
-    for(int n = 0; n < inventory.ingredients.length; n++) {
+    for (int n = 0; n < inventory.ingredients.length; n++) {
       ingredientButtons.add(ButtonComponent(
         anchor: anchor,
         button: SpriteComponent(
@@ -40,23 +40,74 @@ class InventoryDisplay extends PositionComponent with HasGameRef<Samanta> {
           scale: Vector2.all(0.25),
           priority: 1,
         ),
-        position: Vector2(11 + 6.0 * n, 25),
-        onPressed: () { print('pressed'); },
+        position: Vector2(shelf.position.x + 2 + 6.2 * n, shelf.position.y + 12),
+        onPressed: () { 
+          _onIngredientPressed(inventory.ingredients[n].keys.first); 
+        },
         priority: 1,
       ));
 
       add(ingredientButtons[n]);
     }
 
-    await addAll([
-      textbox,
-    ]);
+    await addAll([shelf]);
+  }
+
+  // Method to handle ingredient button press
+  void _onIngredientPressed(String ingredient) {
+    print('Pressed: $ingredient');
+    selectedIngredients.add(ingredient); // Add ingredient to the selected list
+    print(selectedIngredients);
+
+    if (currentCustomer != null) {
+      _checkForCompletion();
+    }
+  }
+
+  // Method to check if the selected ingredients match any of the current customer's ordered items
+  void _checkForCompletion() {
+    if (currentCustomer == null) return; // No customer to serve
+
+    for (MenuItem menuItem in currentCustomer!.order.items.keys) {
+      // Check if the selected ingredients match the required ingredients (regardless of order)
+      if (_ingredientsMatch(menuItem.ingredients)) {
+        // Mark the item as completed in the customer's order
+        currentCustomer!.completeOrderItem(menuItem);
+        print('${menuItem.name} has been completed!');
+        selectedIngredients.clear(); // Clear the selected ingredients list for the next item
+      }
+    }
+
+    // Check if the entire order is completed
+    if (currentCustomer!.order.isCompleted()) {
+      print('Order is completed for customer!');
+      currentCustomer = null; // No more customer to serve
+    }
+  }
+
+  // Helper method to check if selected ingredients match the required ingredients (in any order)
+  bool _ingredientsMatch(List<String> requiredIngredients) {
+    if (requiredIngredients.length != selectedIngredients.length) {
+      return false;
+    }
+    for (String ingredient in requiredIngredients) {
+      if (!selectedIngredients.contains(ingredient)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Method to set the current customer being served
+  void setCurrentCustomer(Customer customer) {
+    currentCustomer = customer;
+    selectedIngredients.clear(); // Clear selected ingredients for a new customer
   }
 }
 
+
 class MenuDisplay extends PositionComponent with HasGameRef<Samanta> {
   MenuDisplay({
-    required super.scale,
     required super.position,
   }) : super(anchor: Anchor.centerLeft);
 
@@ -72,14 +123,14 @@ class MenuDisplay extends PositionComponent with HasGameRef<Samanta> {
   Future<void> onLoad() async {
     textbox = SpriteComponent.fromImage(
         gameRef.images.fromCache(Assets.images.textbox.path),);
-    textbox.scale = Vector2(0.05, 0.15);
-    textbox.position = Vector2(40, -40);
+    textbox.scale = Vector2(0.5, 1);
+    textbox.position = Vector2(300, -300);
     text = TextBoxComponent(
       anchor: anchor,
       text: menu.printMenu(),
-      size: Vector2(textbox.size.x, textbox.size.y + 5),
-      scale: Vector2.all(0.05),
-      position: textbox.position + Vector2(0, 15),
+      size: Vector2(textbox.size.x, textbox.size.y),
+      scale: Vector2.all(0.5),
+      position: textbox.position + Vector2(0, 100),
       align: Anchor.topCenter,
       textRenderer:
           TextPaint(style: const TextStyle(fontSize: 55, color: Colors.black))
@@ -116,9 +167,9 @@ class MenuItem {
 
 class Menu {
   final List<MenuItem> menuItems = [
-    MenuItem(name: 'Burger', price: 300, ingredients: ['Bun', 'Patty', 'Lettuce', 'Tomato']),
-    MenuItem(name: 'Fries', price: 100, ingredients: ['Potato', 'Salt']),
-    MenuItem(name: 'Lemonade', price: 200, ingredients: ['Lemon', 'Sugar']),
+    MenuItem(name: 'Burger', price: 300, ingredients: ['bun', 'patty', 'lettuce', 'tomato']),
+    MenuItem(name: 'Fries', price: 100, ingredients: ['potato', 'salt']),
+    MenuItem(name: 'Lemonade', price: 200, ingredients: ['lemon', 'sugar']),
   ];
 
   MenuItem? getItem(String name) {
@@ -257,13 +308,16 @@ class Order {
   }
 }
 
-<<<<<<< Updated upstream
-class Customer extends SpriteComponent with 
-HasGameRef<Samanta>, CollisionCallbacks {
-=======
 
 class Customer extends SpriteComponent 
   with HasGameRef<Samanta>, CollisionCallbacks {
+  final Order order = Order();
+  bool gettingServed = false;
+  double speed = 100;
+  final Menu menu = Menu();
+  late TextComponent orderDisplay;
+  bool isReadyToBeServed = false;
+
   Customer() {
     // Assign random items to the order
     for (var i = 0; i < Random().nextInt(3) + 1; i++) {
@@ -287,54 +341,12 @@ class Customer extends SpriteComponent
   }
 
 
->>>>>>> Stashed changes
-  final Order order = Order();
-  bool gettingServed = false;
-  double speed = 100;
-  final Menu menu = Menu();
-
-  late TextComponent orderDisplay;
-
-<<<<<<< Updated upstream
-  Customer() {
-    for (int i = 0; i < Random().nextInt(3) + 1; i++) {
-      order.addItem(menu.randomItem());
-    }
-
-   
-    super.debugMode=true;
-  }
-  @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if(other.runtimeType==Customer && other.position.x>position.x){
-      speed=0;
-=======
-  // Boolean flag to track if the customer is ready to be served
-  bool isReadyToBeServed = false;
->>>>>>> Stashed changes
-
-    }
-    // TODO: implement onCollisionStart
-    super.onCollisionStart(intersectionPoints, other);
-  }
-  @override
-  void onCollisionEnd(PositionComponent other) {
-    speed=100;
-    // TODO: implement onCollisionEnd
-    super.onCollisionEnd(other);
-  }
   @override
   FutureOr<void> onLoad() {
-<<<<<<< Updated upstream
-    position=Vector2(-gameRef.size.x/2-10,gameRef.size.y/2);
-    gameRef.numCustomers+=1;
-    Random random = Random();
-=======
     gameRef.numCustomers += 1;
 
     position = Vector2(-gameRef.size.x / 2 - size.x, gameRef.size.y / 2);
     final random = Random();
->>>>>>> Stashed changes
     sprite = gameRef.customerSprites[random.nextInt(gameRef.customerSprites.length)];
 
     orderDisplay = TextComponent(
@@ -345,13 +357,8 @@ class Customer extends SpriteComponent
       position: position, // Position above the customer sprite
       anchor: anchor,
     );
-<<<<<<< Updated upstream
-    add(RectangleHitbox.relative(Vector2(1.2,1), parentSize: size));
-    // add(orderDisplay);
-=======
 
     add(RectangleHitbox.relative(Vector2(1.2, 1), parentSize: size));
->>>>>>> Stashed changes
   }
 
   @override
@@ -364,6 +371,8 @@ class Customer extends SpriteComponent
     if (position.x >= gameRef.size.x / 2 && !gettingServed) {
       gettingServed = true;
       speed = 0; // Stop movement when getting served
+      gameRef.inventoryDisplay.setCurrentCustomer(this);
+      print(order.items); // Set the customer to be served in InventoryDisplay
     }
 
     // If all items are marked as completed, let the customer leave
@@ -371,11 +380,7 @@ class Customer extends SpriteComponent
       position.x += speed * dt;
       if (position.x > gameRef.size.x + 100) {
         removeFromParent();
-<<<<<<< Updated upstream
-        gameRef.numCustomers-=1;
-=======
         gameRef.numCustomers -= 1;
->>>>>>> Stashed changes
       }
     }
 
@@ -390,6 +395,7 @@ class Customer extends SpriteComponent
     // If all items are complete, move the customer
     if (order.isCompleted()) {
       speed = 100; // Resume movement
+      gameRef.totalEarnings += order.getTotalPrice();
     }
   }
 }

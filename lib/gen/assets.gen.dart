@@ -55,14 +55,28 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/buttondown.png');
 
   AssetGenImage get restaurant =>
-      const AssetGenImage('assets/images/restaurant.png');
-   AssetGenImage get customer=>
-      const AssetGenImage('assets/images/game1.png');
-       AssetGenImage get customer1=>
-      const AssetGenImage('assets/images/game.png');
+      const AssetGenImage('assets/images/restaurant.jpg');
+
+  AssetGenImage get queue1 =>
+      const AssetGenImage('assets/images/queue1.png');
+
+  AssetGenImage get queue2 =>
+      const AssetGenImage('assets/images/queue2.png');
+
+  AssetGenImage get queue3 =>
+      const AssetGenImage('assets/images/queue3.png');
+
+  AssetGenImage get queue4 =>
+      const AssetGenImage('assets/images/queue5.png');
+
+  AssetGenImage get queue5 =>
+      const AssetGenImage('assets/images/queue5.png');
 
   AssetGenImage get shelf =>
       const AssetGenImage('assets/images/shelf.jpg');
+
+  AssetGenImage get counter =>
+      const AssetGenImage('assets/images/counter.png');
 }
 
 class $AssetsYarnGen {

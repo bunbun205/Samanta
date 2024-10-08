@@ -7,12 +7,8 @@ import 'package:samanta/game/game.dart';
 import 'package:samanta/gen/assets.gen.dart';
 import 'package:samanta/l10n/l10n.dart';
 
-<<<<<<< Updated upstream
-class Samanta extends FlameGame with HasCollisionDetection {
-=======
 class Samanta extends FlameGame
   with HasCollisionDetection {
->>>>>>> Stashed changes
   Samanta({
     required this.l10n,
     required this.effectPlayer,
@@ -40,34 +36,28 @@ class Samanta extends FlameGame
   bool changeScene = false;
   int chapterNum;
 
-<<<<<<< Updated upstream
-int numCustomers=0;
-=======
   int numCustomers = 0;
->>>>>>> Stashed changes
 
   late List<Sprite> customerSprites = [
-    Sprite(images.fromCache(Assets.images.customer.path)),
-    Sprite(images.fromCache(Assets.images.rem.path)),
-    Sprite(images.fromCache(Assets.images.customer1.path)),
+    Sprite(images.fromCache(Assets.images.queue1.path)),
+    Sprite(images.fromCache(Assets.images.queue2.path)),
+    Sprite(images.fromCache(Assets.images.queue3.path)),
+    Sprite(images.fromCache(Assets.images.queue4.path)),
+    Sprite(images.fromCache(Assets.images.queue5.path)),
   ];
 
   late RouterComponent router;
+
+  late InventoryDisplay inventoryDisplay;
 
   @override
   Future<void> onLoad() async {
 
     router = RouterComponent(
       routes: {
-<<<<<<< Updated upstream
-        "Introduction" : Route(WelcomeScreen.new),
-        "Chapter1" : Route(Chapter1.new),
-        "Chapter2" : Route(Chapter2.new),
-=======
         'Introduction' : Route(WelcomeScreen.new),
         'Chapter1' : Route(Chapter1.new),
         'Chapter2' : Route(Chapter2.new),
->>>>>>> Stashed changes
       },
       initialRoute: 'Introduction',
     );
@@ -76,18 +66,6 @@ int numCustomers=0;
   }
 
   @override
-<<<<<<< Updated upstream
-  void update(double dt) async {
-    if(changeScene) {
-    switch(chapterNum){
-      case 1:
-        router.pushNamed("Chapter1");
-      break;
-      case 2:
-        router.pushNamed("Chapter2");
-      break;
-    }
-=======
   Future<void> update(double dt) async {
     if(changeScene) {
 
@@ -101,10 +79,8 @@ int numCustomers=0;
         default:
       } 
       
->>>>>>> Stashed changes
     }
 
-    print(numCustomers);
     super.update(dt);
   }
 

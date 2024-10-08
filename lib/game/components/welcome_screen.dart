@@ -17,7 +17,7 @@ class WelcomeScreen extends Component with HasGameRef<Samanta>{
 
   @override
   FutureOr<void> onLoad() async {
-    dialogueScreen = DialogueComponent(scale: Vector2.all(8), position: gameRef.size/2, dialogues: dialogue);
+    dialogueScreen = DialogueComponent(position: gameRef.size/2, dialogues: dialogue, size: gameRef.size);
     await add(Background(speed: 200));
     await add(dialogueScreen);
 
