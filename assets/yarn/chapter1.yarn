@@ -7,5 +7,13 @@ player: Hello how are you?
 npc: I am fine. How are you?
 player: I am well. What can I help you with today?
 npc: I need help running my restaurant.
-player: I am up for that!
+player: well sure what am i supposed to do?
+npc: in the menue there are three dishes that are writen beside each dish are ingredients required to make it.
+player: ok.
+npc: well you will have to fulfill the demands of the players by making the dishes asked by the player from the menue.
+player: okay and how do i make the dish?
+npc: the ingredients required to make the diffrent dishes are gonna be placed on the shelf, with every order you will choose the ingredients required to make the dish that is ordered and click on them.
+player: okmay but how will i know that i choose the right ingredients?
+npc: when you have clikced on the right ingredients of the dish it will be made and server to the customer who in response leave money on the counter and exit the restaurant.
+player: well whats the wait lets get started.
 ===
