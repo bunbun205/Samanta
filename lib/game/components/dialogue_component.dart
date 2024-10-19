@@ -1,13 +1,18 @@
+import 'dart:async';
+
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:jenny/jenny.dart';
 import 'package:samanta/game/game.dart';
 import 'package:samanta/gen/assets.gen.dart';
 
-class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
+class DialogueComponent extends PositionComponent
+ with HasGameRef<Samanta>, DialogueView {
   DialogueComponent({
-    required super.position, required this.dialogues, required super.size
+    required super.position, required this.dialogueData, required super.size
   }) : super(anchor: Anchor.centerLeft);
 
   late final SpriteComponent player;
@@ -19,12 +24,22 @@ class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
 
   late final ButtonComponent nextButton;
 
-  late final List<Map<String, String>> dialogues;
+  late final String dialogueData;
 
-  int counter = 0;
+  YarnProject yarnProject = YarnProject();
+
+  Completer<void> _forwardCompleter = Completer();
 
   @override
   Future<void> onLoad() async {
+    String testData = await rootBundle.loadString(Assets.yarn.test);
+    yarnProject
+      ..parse(dialogueData)
+      ..parse(testData);
+    var dialogueRunner = DialogueRunner(
+      yarnProject: yarnProject, dialogueViews: [this]
+    );
+    dialogueRunner.startDialogue('Chapter_1');
     player = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.player.path));
     npc = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.rem.path));
     textbox = SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.textbox.path));
@@ -37,12 +52,12 @@ class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
     textbox.position = Vector2(-textbox.size.x/2, gameRef.size.y/2 - textbox.size.y/2);
     text = TextBoxComponent(
       anchor: anchor,
-      text: dialogues[0].values.first,
+      text: ' ',
       size: Vector2(textbox.size.x, textbox.size.y),
       scale: textbox.scale,
       position: textbox.position,
       align: Anchor.bottomCenter,
-      textRenderer: TextPaint(style: const TextStyle(fontSize: 24, color: Colors.black)).copyWith(
+      textRenderer: TextPaint(style: const TextStyle(fontSize: 20, color: Colors.black)).copyWith(
         (style) => style.copyWith(
           letterSpacing: 2,
           
@@ -64,22 +79,49 @@ class DialogueComponent extends PositionComponent with HasGameRef<Samanta> {
     await addAll([player, npc, textbox, text, nextButton]);
   }
 
-  
-  void _updateSprites() {
-    if(counter > dialogues.length - 1) {
-      gameRef.updateScene();
-      return;
-    }
+  @override
+  FutureOr<bool> onLineStart(DialogueLine line) async {
+    _forwardCompleter = Completer();
+    await _advance(line);
+    return super.onLineStart(line);
+  }
 
-    if(dialogues[counter].keys.first == 'player') {
+  var characterName;
+
+  Future<void> _advance(DialogueLine line) async {
+    text.text = line.text;
+    characterName = line.character?.name;
+    if(characterName == 'player') {
       player.scale = Vector2.all(1.5);
       npc.scale = Vector2(-1, 1);
     }
-    if(dialogues[counter].keys.first == 'npc') {
+    if(characterName == 'npc') {
       player.scale = Vector2.all(1);
       npc.scale = Vector2(-1.5, 1.5);
     }
-    text.text = dialogues[counter].values.first;
-    counter++;
+    return _forwardCompleter.future;
+  }
+
+  
+  void _updateSprites() {
+    // if(counter > dialogues.length - 1) {
+    //   gameRef.updateScene();
+    //   return;
+    // }
+
+    
+    // text.text = dialogues[counter].values.first;
+    // counter++;
+
+    if(!_forwardCompleter.isCompleted) {
+      _forwardCompleter.complete();
+    }
+
+  }
+
+ @override
+  FutureOr<void> onNodeFinish(Node node) async {
+    gameRef.updateScene();
+    return super.onNodeFinish(node);
   }
 }

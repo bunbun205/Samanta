@@ -55,9 +55,7 @@ class InventoryDisplay extends PositionComponent with HasGameRef<Samanta> {
 
   // Method to handle ingredient button press
   void _onIngredientPressed(String ingredient) {
-    print('Pressed: $ingredient');
     selectedIngredients.add(ingredient); // Add ingredient to the selected list
-    print(selectedIngredients);
 
     if (currentCustomer != null) {
       _checkForCompletion();
@@ -354,7 +352,7 @@ class Customer extends SpriteComponent
       textRenderer: TextPaint(
         style: const TextStyle(fontSize: 24, color: Colors.black),
       ),
-      position: position, // Position above the customer sprite
+      position: gameRef.size/2, // Position above the customer sprite
       anchor: anchor,
     );
 
@@ -372,7 +370,8 @@ class Customer extends SpriteComponent
       gettingServed = true;
       speed = 0; // Stop movement when getting served
       gameRef.inventoryDisplay.setCurrentCustomer(this);
-      print(order.items); // Set the customer to be served in InventoryDisplay
+      print(order.items.entries);
+      orderDisplay.text = order.items.entries.toString();// Set the customer to be served in InventoryDisplay
     }
 
     // If all items are marked as completed, let the customer leave
@@ -384,8 +383,7 @@ class Customer extends SpriteComponent
       }
     }
 
-    // Update the display position to follow the customer
-    orderDisplay.position = position;
+    // Update the display position to follow the custome
   }
 
   // Method to manually complete the order when the correct ingredients are selected

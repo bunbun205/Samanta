@@ -22,7 +22,10 @@ class Chapter1 extends Component with HasGameRef<Samanta> {
       size: gameRef.size,
     );
     await add(background);
-    await add(MenuDisplay(position: gameRef.size / 2));
+    await add(SpriteComponent.fromImage(
+      gameRef.images.fromCache(Assets.images.legend.path),
+      position: Vector2(gameRef.size.x - 500, 0),
+    ));
     gameRef.inventoryDisplay = InventoryDisplay(scale: Vector2.all(8), position: gameRef.size / 2);
     await add(gameRef.inventoryDisplay);
 
@@ -42,6 +45,7 @@ class Chapter1 extends Component with HasGameRef<Samanta> {
     counter = SpriteComponent.fromImage(
       gameRef.images.fromCache(Assets.images.counter.path),
       scale: Vector2.all(0.5),
+      position: Vector2(gameRef.size.x / 3 + 300, gameRef.size.y / 2)
     );
     add(counter);
 

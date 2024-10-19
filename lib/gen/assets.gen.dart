@@ -77,6 +77,9 @@ class $AssetsImagesGen {
 
   AssetGenImage get counter =>
       const AssetGenImage('assets/images/counter.png');
+
+  AssetGenImage get legend =>
+      const AssetGenImage('assets/images/legend.png');
 }
 
 class $AssetsYarnGen {
@@ -84,6 +87,8 @@ class $AssetsYarnGen {
 
   /// File path: assets/audio/background.mp3
   String get chapter1 => 'assets/yarn/chapter1.yarn';
+  String get test => 'assets/yarn/test.yarn';
+  String get chapter2 => 'assets/yarn/chapter2.yarn';
 }
 
 class $AssetsLicensesGen {
