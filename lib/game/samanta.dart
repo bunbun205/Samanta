@@ -27,6 +27,8 @@ class Samanta extends FlameGame
 
   late double totalEarnings = 0;
 
+  late String orderDisplay = '';
+
   int counter = 0;
 
   @override
@@ -37,6 +39,8 @@ class Samanta extends FlameGame
   int chapterNum;
 
   int numCustomers = 0;
+
+  int score = 0;
 
   late List<Sprite> customerSprites = [
     Sprite(images.fromCache(Assets.images.queue1.path)),
@@ -55,7 +59,7 @@ class Samanta extends FlameGame
 
     router = RouterComponent(
       routes: {
-        'Introduction' : Route(WelcomeScreen.new),
+        'Introduction' : chapterNum == 1 ? Route(WelcomeScreen.new) : Route(Chapter2.new),
         'Chapter1' : Route(Chapter1.new),
         'Chapter2' : Route(Chapter2.new),
       },

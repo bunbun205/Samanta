@@ -313,7 +313,7 @@ class Customer extends SpriteComponent
   bool gettingServed = false;
   double speed = 100;
   final Menu menu = Menu();
-  late TextComponent orderDisplay;
+  // late PositionComponent orderDisplay;
   bool isReadyToBeServed = false;
 
   Customer() {
@@ -347,16 +347,25 @@ class Customer extends SpriteComponent
     final random = Random();
     sprite = gameRef.customerSprites[random.nextInt(gameRef.customerSprites.length)];
 
-    orderDisplay = TextComponent(
-      text: order.items.entries.toString(),
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 24, color: Colors.black),
-      ),
-      position: gameRef.size/2, // Position above the customer sprite
-      anchor: anchor,
-    );
+    // orderDisplay = PositionComponent(
+    //   size: Vector2(50, 50),
+    //   position: position,
+    // );
+
+    // orderDisplay.add(SpriteComponent.fromImage(gameRef.images.fromCache(Assets.images.textbox.path)));
+
+    // orderDisplay = TextComponent(
+    //   text: order.items.entries.toString(),
+    //   textRenderer: TextPaint(
+    //     style: const TextStyle(fontSize: 24, color: Colors.black),
+    //   ),
+    //   position: position, // Position above the customer sprite
+    //   anchor: anchor,
+    //   priority: 0,
+    // );
 
     add(RectangleHitbox.relative(Vector2(1.2, 1), parentSize: size));
+    // add(orderDisplay);
   }
 
   @override
@@ -365,13 +374,14 @@ class Customer extends SpriteComponent
 
     position.x += speed * dt;
 
+    // orderDisplay.position = position;
+
     // Stop customer at the counter when it's time to be served
     if (position.x >= gameRef.size.x / 2 && !gettingServed) {
       gettingServed = true;
       speed = 0; // Stop movement when getting served
       gameRef.inventoryDisplay.setCurrentCustomer(this);
-      print(order.items.entries);
-      orderDisplay.text = order.items.entries.toString();// Set the customer to be served in InventoryDisplay
+      gameRef.orderDisplay = order.items.toString();// Set the customer to be served in InventoryDisplay
     }
 
     // If all items are marked as completed, let the customer leave

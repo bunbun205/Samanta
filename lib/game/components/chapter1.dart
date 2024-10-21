@@ -13,6 +13,8 @@ class Chapter1 extends Component with HasGameRef<Samanta> {
 
   late TextComponent earnings;
 
+  late TextBoxComponent order;
+
   late SpriteComponent counter;
 
   @override
@@ -29,7 +31,7 @@ class Chapter1 extends Component with HasGameRef<Samanta> {
     gameRef.inventoryDisplay = InventoryDisplay(scale: Vector2.all(8), position: gameRef.size / 2);
     await add(gameRef.inventoryDisplay);
 
-    customerSpawnTimer = Timer(5, repeat: true, onTick: spawnCustomer);
+    customerSpawnTimer = Timer(7, repeat: true, onTick: spawnCustomer);
     customerSpawnTimer.start();
     earnings = TextComponent(
       text: gameRef.totalEarnings.toString(),
@@ -42,6 +44,21 @@ class Chapter1 extends Component with HasGameRef<Samanta> {
       ),
     );
 
+    order = TextBoxComponent(
+      text: gameRef.orderDisplay,
+      position: Vector2(gameRef.size.x /2 + 150, gameRef.size.x/3),
+      boxConfig: TextBoxConfig(
+        maxWidth:200,
+      ),
+      textRenderer:
+          TextPaint(style: const TextStyle(fontSize: 20, color: Colors.black, backgroundColor: Colors.white))
+              .copyWith(
+        (style) => style.copyWith(
+          letterSpacing: 1,
+        ),
+      ),
+    );
+
     counter = SpriteComponent.fromImage(
       gameRef.images.fromCache(Assets.images.counter.path),
       scale: Vector2.all(0.5),
@@ -50,6 +67,7 @@ class Chapter1 extends Component with HasGameRef<Samanta> {
     add(counter);
 
     add(earnings);
+    add(order);
   }
 
   @override
@@ -57,11 +75,14 @@ class Chapter1 extends Component with HasGameRef<Samanta> {
     background.size = gameRef.size;
 
     earnings.text = gameRef.totalEarnings.toString();
+    order.text = gameRef.orderDisplay;
     customerSpawnTimer.update(dt);
 
     if (gameRef.numCustomers == 0 && customerSpawnTimer.current == 0) {
       gameRef.overlays.add('gameover_screen');
     }
+
+    if(gameRef.numCustomers == 0) gameRef.orderDisplay = ' ';
   }
 
   void spawnCustomer() {
